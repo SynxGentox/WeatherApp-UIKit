@@ -74,11 +74,17 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
     lazy var forecastTable: UITableView = {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
-        table.backgroundColor = .red
+        table.backgroundColor = .clear
         table.register(UITableViewCell.self, forCellReuseIdentifier: "ForecastCell")
         return table
     }()
     
+    lazy var loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.color = .white
+        return indicator
+    }()
     
     var viewModel = WeatherViewModel()
     
@@ -91,14 +97,16 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
         super.viewDidLoad()
         view.backgroundColor = .blue
         labelView()
-        title = "Rainy"
+        title = "No Data"
         navigationController?.navigationBar.prefersLargeTitles = true
         updateView()
-        viewModel.fetchWeather(city: "London", unit: "metric")
+        viewModel.fetchWeather(city: "...", unit: "metric")
         cityField.delegate = self
         navigationItem.titleView = cityField
         forecastTable.delegate = self
         forecastTable.dataSource = self
+        loadingIndicator.startAnimating()
+        
         
         // Do any additional setup after loading the view.
     }
@@ -114,6 +122,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastCell", for: indexPath)
         cell.textLabel?.text = forecastData[indexPath.row]
+        cell.backgroundColor = .clear
         return cell
     }
     
@@ -122,6 +131,11 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
             self?.cityName.text = self?.viewModel.cityName
             self?.temperature.text = self?.viewModel.temperature
             self?.weatherCond.text = self?.viewModel.weatherCondition
+            self?.loadingIndicator.stopAnimating()
+            if let id = self?.viewModel.conditionId {
+                self?.view.backgroundColor = WeatherConditionHelper.backgroundColor(for: id)
+            }
+            self?.title = self?.viewModel.weatherCondition
         }
             
         viewModel.error = { [weak self] error in
@@ -133,8 +147,6 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
                 )
                 alert.addAction(UIAlertAction(title: "OK", style: .default))
                 self?.present(alert, animated: true)
-                
-                    
             }
         }
     }
@@ -154,7 +166,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
         view.addSubview(weatherStack)
         view.addSubview(weatherImage)
         view.addSubview(forecastTable)
-        
+        view.addSubview(loadingIndicator)
         
         
         
@@ -201,7 +213,9 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
             forecastTable.topAnchor.constraint(equalTo: weatherImage.bottomAnchor, constant: 20),
             forecastTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             forecastTable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            forecastTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            forecastTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            loadingIndicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
         ])
     }
     
