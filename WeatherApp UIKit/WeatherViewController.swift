@@ -68,6 +68,18 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
         searchField.textAlignment = .center
         searchField.placeholder = "City..."
         searchField.returnKeyType = .search
+        searchField.translatesAutoresizingMaskIntoConstraints = false
+        searchField.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+        searchField.layer.cornerRadius = 10
+        searchField.clipsToBounds = true
+        searchField.textColor = .white
+        searchField.attributedPlaceholder = NSAttributedString(
+            string: "City...",
+            attributes: [.foregroundColor: UIColor.white.withAlphaComponent(0.6)]
+        )
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        searchField.leftView = paddingView
+        searchField.leftViewMode = .always
         return searchField
     }()
     
@@ -122,6 +134,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastCell", for: indexPath)
         cell.textLabel?.text = forecastData[indexPath.row]
+        cell.textLabel?.textColor = .white
         cell.backgroundColor = .clear
         return cell
     }
@@ -134,6 +147,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
             self?.loadingIndicator.stopAnimating()
             if let id = self?.viewModel.conditionId {
                 self?.view.backgroundColor = WeatherConditionHelper.backgroundColor(for: id)
+                self?.weatherImage.image = UIImage(systemName: WeatherConditionHelper.iconName(for: id))
             }
             self?.title = self?.viewModel.weatherCondition
         }

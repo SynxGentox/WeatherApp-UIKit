@@ -10,14 +10,14 @@ import UIKit
 struct WeatherConditionHelper {
     static func iconName(for conditionId: Int) -> String {
         switch conditionId {
-        case 200...232: return "clear-day"
-        case 300...321: return "clear-night"
-        case 500...531: return "rain"
-        case 600...622: return "snow"
-        case 700...781: return "sleet"
-        case 800      : return "fog"
-        case 801...804: return "cloudy"
-        default:       return "clear-day"
+        case 200...232: return "cloud.bolt.rain.fill"
+        case 300...321: return "cloud.drizzle.fill"
+        case 500...531: return "cloud.rain.fill"
+        case 600...622: return "snowflake"
+        case 700...781: return "cloud.fog.fill"
+        case 800:       return "sun.max.fill"
+        case 801...804: return "cloud.fill"
+        default:        return "sun.max.fill"
         }
     }
     

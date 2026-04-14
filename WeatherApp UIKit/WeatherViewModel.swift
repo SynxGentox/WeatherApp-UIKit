@@ -35,7 +35,8 @@ class WeatherViewModel {
             do {
                 let weatherData = try await result.fetchWeather(cityName: city, unit: unit)
                 self.cityName = weatherData.name
-                self.temperature = String(format: "%.1f°C", weatherData.main.temp)
+                let symbol = unit == "metric" ? "°C" : "°F"
+                self.temperature = String(format: "%.1f\(symbol)",weatherData.main.temp)
                 self.weatherCondition = weatherData.weather.first?.description ?? "---"
                 self.conditionId = weatherData.weather.first?.id ?? 0
                 DispatchQueue.main.async {
