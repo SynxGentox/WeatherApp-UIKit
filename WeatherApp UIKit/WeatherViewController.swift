@@ -77,9 +77,11 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
             string: "City...",
             attributes: [.foregroundColor: UIColor.white.withAlphaComponent(0.6)]
         )
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 0))
         searchField.leftView = paddingView
+        searchField.rightView = paddingView
         searchField.leftViewMode = .always
+        searchField.rightViewMode = .always
         return searchField
     }()
     
@@ -118,6 +120,13 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
         forecastTable.delegate = self
         forecastTable.dataSource = self
         loadingIndicator.startAnimating()
+        let appearance = UINavigationBarAppearance()
+        appearance.largeTitleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: 40, weight: .bold, width: .compressed),
+            .foregroundColor: UIColor.white
+        ]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
         
         // Do any additional setup after loading the view.
@@ -176,7 +185,6 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
     
     
     func labelView() {
-        view.addSubview(weatherCond)
         view.addSubview(weatherStack)
         view.addSubview(weatherImage)
         view.addSubview(forecastTable)
@@ -186,20 +194,10 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
         
         
         NSLayoutConstraint.activate([
-            weatherCond.trailingAnchor
-                .constraint(
-                    equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                    constant: -15
-                ),
             weatherStack.leadingAnchor
                 .constraint(
                     equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                     constant: 15
-                ),
-            weatherCond.topAnchor
-                .constraint(
-                    equalTo: view.safeAreaLayoutGuide.topAnchor,
-                    constant: 40
                 ),
             weatherStack.topAnchor
                 .constraint(

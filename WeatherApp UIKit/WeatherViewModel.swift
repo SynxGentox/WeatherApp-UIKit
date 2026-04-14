@@ -10,8 +10,11 @@ import Foundation
 ///  ViewModel - data model for the UI 
 class WeatherViewModel {
     
-    /// - Parameters: Recieves the result from weatherServices and input form the user
+    
+    /// Network service instance used to fetch weather data
     private let result: WeatherServices = WeatherServices()
+    
+    /// - Parameters: Recieves the result from weatherServices and input form the user
     var cityName: String = "---"
     var unit: String = "metric"
     var temperature: String = "---"
@@ -29,7 +32,7 @@ class WeatherViewModel {
     ///   - city: receives the weather name for the city name
     ///   - unit: receives the weather data according to the Unit
     /// - Returns: returs the weather updated data to the UI through the null closure for update OR error through error closure including the city weather name, temp as per unit and weather condition description
-    func fetchWeather(city: String, unit: String) -> Void {
+    func fetchWeather(city: String, unit: String) {
         Task {
 //            try? await Task.sleep(nanoseconds: 2_000_000_000)
             do {
