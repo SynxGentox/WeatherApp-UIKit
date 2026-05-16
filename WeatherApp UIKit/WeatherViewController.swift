@@ -104,9 +104,6 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
     
     
     
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .blue
@@ -131,8 +128,6 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
         
         // Do any additional setup after loading the view.
     }
-    
-    
     
     
     
@@ -182,15 +177,11 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
     }
     
     
-    
-    
     func labelView() {
         view.addSubview(weatherStack)
         view.addSubview(weatherImage)
         view.addSubview(forecastTable)
         view.addSubview(loadingIndicator)
-        
-        
         
         
         NSLayoutConstraint.activate([
@@ -230,13 +221,6 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, UITableViewD
             loadingIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
         ])
     }
-    
-    
-    
-    
-    
-    
-    
     
     
     /*
